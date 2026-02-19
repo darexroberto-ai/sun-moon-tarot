@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Sun & Moon Tarot Pro</title>
+<style>
+body {
+    margin: 0;
+    background: radial-gradient(circle at top, #1a1a2e, #000);
+    color: white;
+    font-family: serif;
+    text-align: center;
+}
+
+h1 {
+    padding: 20px;
+    background: linear-gradient(to right, gold, silver);
+    -webkit-background-clip: text;
+    color: transparent;
+}
+
+button {
+    padding: 10px 20px;
+    margin: 10px;
+    background: linear-gradient(to right, #f5c542, #8ec5fc);
+    border: none;
+    border-radius: 12px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+#cardArea {
+    margin-top: 30px;
+    padding: 20px;
+}
+
+.card {
+    border: 2px solid gold;
+    border-radius: 15px;
+    padding: 20px;
+    margin: 10px auto;
+    width: 250px;
+    background: rgba(255,255,255,0.05);
+}
+
+.shuffleAnim {
+    animation: spin 1s linear;
+}
+
+@keyframes spin {
+    from { transform: rotateY(0deg); }
+    to { transform: rotateY(360deg); }
+}
+</style>
+</head>
+<body>
+
+<h1>🌞 Sun & Moon Tarot Pro 🌙</h1>
+
+<button onclick="shuffleDeck()">🔀 Shuffle</button>
+<button onclick="drawOne()">1 Card</button>
+<button onclick="drawThree()">3 Card Spread</button>
+<button onclick="drawCeltic()">Celtic Cross</button>
+<button onclick="resetDeck()">Reset</button>
+
+<div id="cardArea">Shuffle the deck to begin...</div>
+
+<script>
+
+const tarotDeck = [
+"The Fool","The Magician","The High Priestess","The Empress","The Emperor",
+"The Hierophant","The Lovers","The Chariot","Strength","The Hermit",
+"Wheel of Fortune","Justice","The Hanged Man","Death","Temperance",
+"The Devil","The Tower","The Star","The Moon","The Sun",
+"Judgement","The World",
+
+"Ace of Wands","Two of Wands","Three of Wands","Four of Wands","Five of Wands",
+"Six of Wands","Seven of Wands","Eight of Wands","Nine of Wands","Ten of Wands",
+"Page of Wands","Knight of Wands","Queen of Wands","King of Wands",
+
+"Ace of Cups","Two of Cups","Three of Cups","Four of Cups","Five of Cups",
+"Six of Cups","Seven of Cups","Eight of Cups","Nine of Cups","Ten of Cups",
+"Page of Cups","Knight of Cups","Queen of Cups","King of Cups",
+
+"Ace of Swords","Two of Swords","Three of Swords","Four of Swords","Five of Swords",
+"Six of Swords","Seven of Swords","Eight of Swords","Nine of Swords","Ten of Swords",
+"Page of Swords","Knight of Swords","Queen of Swords","King of Swords",
+
+"Ace of Pentacles","Two of Pentacles","Three of Pentacles","Four of Pentacles",
+"Five of Pentacles","Six of Pentacles","Seven of Pentacles","Eight of Pentacles",
+"Nine of Pentacles","Ten of Pentacles",
+"Page of Pentacles","Knight of Pentacles","Queen of Pentacles","King of Pentacles"
+];
+
+let deck = [];
+
+function shuffleDeck() {
+    deck = tarotDeck.map(card => ({
+        name: card,
+        reversed: Math.random() > 0.5
+    }));
+
+    for (let i = deck.length - 1; i > 0; i--) {
+        let j = Math.floor(Math.random() * (i + 1));
+        [deck[i], deck[j]] = [deck[j], deck[i]];
+    }
+
+    document.getElementById("cardArea").innerHTML =
+        "<div class='card shuffleAnim'>🌞🌙 Deck Shuffled 🌙🌞</div>";
+}
+
+function drawCardHTML(cardObj) {
+    return `
+        <div class="card">
+            <h3>${cardObj.name}</h3>
+            <p>${cardObj.reversed ? "🌙 Reversed" : "🌞 Upright"}</p>
+        </div>
+    `;
+}
+
+function drawOne() {
+    if (deck.length === 0) return alert("Shuffle first!");
+    let card = deck.pop();
+    document.getElementById("cardArea").innerHTML = drawCardHTML(card);
+}
+
+function drawThree() {
+    if (deck.length < 3) return alert("Shuffle first!");
+    let output = "";
+    for (let i = 0; i < 3; i++) {
+        output += drawCardHTML(deck.pop());
+    }
+    document.getElementById("cardArea").innerHTML = output;
+}
+
+function drawCeltic() {
+    if (deck.length < 10) return alert("Shuffle first!");
+    let output = "";
+    for (let i = 0; i < 10; i++) {
+        output += drawCardHTML(deck.pop());
+    }
+    document.getElementById("cardArea").innerHTML = output;
+}
+
+function resetDeck() {
+    deck = [];
+    document.getElementById("cardArea").innerHTML =
+        "Deck reset. Shuffle to start again.";
+}
+
+</script>
+
+</body>
+</html>
